@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antología Temática — Tragedias de Shakespeare</title>
+<style>
+  :root {
+    --ink: #1a1410;
+    --ink-light: #3d332a;
+    --ink-faint: #6b5d52;
+    --paper: #f9f6f0;
+    --paper-warm: #f2ede4;
+    --paper-dark: #e8e0d4;
+    --accent: #8b1a1a;
+    --accent-soft: #c4392e;
+    --gold: #a07820;
+    --border: #c8beb4;
+    --quote-bg: #f5f0e8;
+    --quote-border: #a07820;
+    --shadow: rgba(30,20,10,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.015) 60px,
+      rgba(255,255,255,0.015) 61px
+    );
+    pointer-events: none;
+  }
+
+  .header-ornament {
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: block;
+    opacity: 0.85;
+  }
+
+  header h1 {
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: normal;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: #d4aa70;
+  }
+
+  header p.subtitle {
+    color: #b0a898;
+    font-style: italic;
+    font-size: 1rem;
+    margin-top: 0.6rem;
+  }
+
+  .header-rule {
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto 0;
+    opacity: 0.6;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ─── FILTER PANEL ─── */
+  .filter-panel {
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.4rem;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  .filter-group label {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    margin-bottom: 0.45rem;
+    font-family: 'Georgia', serif;
+  }
+
+  .filter-group select {
+    width: 100%;
+    padding: 0.55rem 2rem 0.55rem 0.75rem;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 0.92rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b5d52' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .filter-group select:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(160,120,32,0.15);
+  }
+
+  .filter-actions {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+  }
+
+  .btn-reset {
+    padding: 0.55rem 1.2rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink-faint);
+    font-family: 'Georgia', serif;
+    font-size: 0.85rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-reset:hover {
+    background: var(--paper-dark);
+    color: var(--ink);
+    border-color: var(--ink-faint);
+  }
+
+  /* ─── STATS BAR ─── */
+  .stats-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+
+  .stats-count strong {
+    color: var(--accent);
+    font-size: 1.05rem;
+  }
+
+  /* ─── RESULTS GRID ─── */
+  #results {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ─── EJE GROUP ─── */
+  .eje-group {
+    margin-bottom: 3rem;
+  }
+
+  .eje-heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .eje-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-style: italic;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .eje-heading h2 {
+    font-size: 1.15rem;
+    font-weight: normal;
+    font-style: italic;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  .eje-count {
+    margin-left: auto;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ─── QUOTE CARDS ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 4px var(--shadow);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 16px var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .card-meta {
+    padding: 0.85rem 1.2rem;
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--paper-dark);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.8rem;
+    align-items: baseline;
+  }
+
+  .card-character {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .card-play {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--ink-faint);
+  }
+
+  .card-location {
+    font-size: 0.75rem;
+    color: var(--border);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    width: 100%;
+    margin-top: 0.1rem;
+  }
+
+  .card-body {
+    padding: 1.2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eje-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    margin-bottom: 0.9rem;
+    opacity: 0.85;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--quote-border);
+    background: var(--quote-bg);
+    padding: 1rem 1.1rem;
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--ink-light);
+    line-height: 1.75;
+    font-style: italic;
+    border-radius: 0 2px 2px 0;
+    flex: 1;
+    position: relative;
+  }
+
+  blockquote::before {
+    content: '“';
+    position: absolute;
+    top: -0.2rem;
+    left: 0.4rem;
+    font-size: 2.5rem;
+    color: var(--quote-border);
+    opacity: 0.25;
+    font-style: normal;
+    line-height: 1;
+  }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  .empty-state .empty-icon {
+    font-size: 2.5rem;
+    opacity: 0.3;
+    margin-bottom: 1rem;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--paper-dark);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  footer strong {
+    color: var(--ink-light);
+    font-style: normal;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .filter-panel { grid-template-columns: 1fr; padding: 1.2rem; }
+    .cards-grid { grid-template-columns: 1fr; }
+    header { padding: 2rem 1rem 1.8rem; }
+    .container { padding: 1.5rem 1rem 3rem; }
+  }
+
+  @media print {
+    .filter-panel { display: none; }
+    .card { break-inside: avoid; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="header-ornament">&#9830;&ensp;Corpus Académico&ensp;&#9830;</span>
+  <h1>Antología Temática de las<br><em>Tragedias de Shakespeare</em></h1>
+  <p class="subtitle">Análisis de ejes simbólicos, metafóricos y conceptuales en diez tragedias</p>
+  <div class="header-rule"></div>
+</header>
+
+<div class="container">
+
+  <div class="filter-panel">
+    <div class="filter-group">
+      <label for="sel-eje">Eje temático</label>
+      <select id="sel-eje">
+        <option value="">— Todos los ejes —</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="sel-obra">Obra</label>
+      <select id="sel-obra">
+        <option value="">— Todas las obras —</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="sel-personaje">Personaje</label>
+      <select id="sel-personaje">
+        <option value="">— Todos los personajes —</option>
+      </select>
+    </div>
+    <div class="filter-actions">
+      <button class="btn-reset" id="btn-reset">&#10006;&ensp;Limpiar filtros</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stats-count">
+      Mostrando <strong id="count-shown">0</strong> de <strong id="count-total">0</strong> parlamentos
+    </div>
+    <div id="active-filters" style="font-style:italic;"></div>
+  </div>
+
+  <div id="results"></div>
+
+</div>
+
+<footer>
+  <p><strong>Antología temática de las Tragedias de Shakespeare</strong></p>
+  <p style="margin-top:0.4rem;">Traducción al español &mdash; Edición Penguin Clásicos &mdash; Análisis literario de ejes simbólicos y metafóricos</p>
+</footer>
+
+<script>
+const DATA = [
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena II",
+    "personaje": "Hamlet",
+    "cita": "Ah, que esta carne demasiado, demasiado compacta se fundiese, se derritiese y resolviese en un rocío, o que el Eterno no hubiera fijado su canon contra aquel que a sí se da la muerte. ¡Oh, Dios mío, Dios mío, qué fatigosos, rancios, vanos y sin provecho me parecen los usos de este mundo! ¡Qué asco da! ¡Oh, asco, asco! Es un jardín sin desbrozar que crece hasta dar grano. Solo cosas vulgares y de índole grosera lo poseen. Haber tenido que llegar a esto: dos meses muerto apenas; no, ni siquiera dos; un rey tan excelente, que al lado de este otro era Hiperión junto a algún sátiro; tan amoroso con mi madre, que no permitiría que los vientos del cielo visitaran su rostro con rudeza. Cielo y tierra, ¿tendré que recordarlo?"
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Mercucio",
+    "cita": "Ya veo que la partera de las hadas, la reina Mab, te ha visitado: viene (más diminuta que una piedra ágata en el dedo anular de un concejal) conducida por una recua de átomos y Su carro es una cáscara de nuez que la ardilla ebanista o que la larva (las carroceras de hadas) construyeron; sus radios son las patas de una araña, y su capota, alas de cigarras; las riendas son de tenue telaraña, y la argolla, de rayos de agua y luna; es la tralla de hueso y piel de grillo, y, el cochero, un mosquito con librea y de menor tamaño que el gusano en el dedo holgazán de una muchacha."
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Fray Lorenzo",
+    "cita": "<strong>LORENZO</strong><br>¡Quieto, desesperado! ¿Y tú eres hombre? Lo pareces, pero tu llanto es de mujer, y tus salvajes actos, de bestia bárbara y furiosa. Mujer extraña con aspecto de hombre, bestia antinatural que a ambos semeja: me desconciertas. Por mi santa orden, que te creí de acero más templado. Has matado a Teobaldo, ¿y ahora quieres matarte tú y a la dama que en ti vive con ese odio horroroso hacia ti mismo? ¿Ultrajas nacimiento, cielo y tierra? Tu nacimiento, tierra y cielo están los tres en ti, y a todos perderías. ¡Por Dios!, ofendes tu cuerpo, tu amor, tu talento, usurero rico en todo, y no los usas en lo que debieras, para adornar tu cuerpo, tu amor y tu talento."
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Espectro",
+    "cita": "Sí; esa bestia incestuosa, adúltera, con malas artes de su ingenio, con regalos traidores (¡oh, malhadado ingenio y malvados regalos, que tienen el poder de seducir así!), para su vergonzosa lascivia conquistó el albedrío de mi reina que tan virtuosa parecía. Oh, Hamlet, qué caída hubo con eso, desde mí, cuyo amor fue de tal dignidad, que iba a la par de aquellos votos que le hice en su boda; y para declinar hacia un malvado cuyas dotes naturales eran bien pobres comparadas con las mías. Pero así como la virtud no se dejará nunca conmover por más que la lujuria la corteje bajo una forma celestial, del mismo modo el apetito, incluso unido a algún ángel radiante, se hastiará en una cama celestial y se abalanzará sobre las inmundicias."
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Otelo",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Yago",
+    "cita": "Sí, ándale, adiós. Pon suficiente dinero en tu bolsa. Así es como convierto a un imbécil en mi bolsa porque profanaría la ciencia que he adquirido si con un tonto así perdiera el tiempo a no ser por diversión y provecho. Odio al moro, y dicen por ahí que ha hecho sus oficios en mis sábanas. Ignoro si sea cierto, mas yo en tal caso por sospechas obro cual si fuera verdad. En tanto que me estima tanto mejor efecto surtirá mi propósito. Casio es bien parecido. Déjenme ver ahora: arrebatarle el puesto y ufanarme realizando una doble maldad. ¿Cómo? ¿Cómo? Veamos. Pasado algún tiempo en los oídos de Otelo ir susurrando que Casio es demasiado familiar con su esposa. Son sospechosos su apariencia y trato, propios a seducir a las mujeres."
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Volumnia",
+    "cita": "¡Ahora, que la peste roja azote a todos los oficios de Roma, y que perezcan las artes!<br><br><strong>CORIOLANO</strong><br>¡Vamos, vamos! Se me amará cuando no se me encuentre. No, madre. Recobra ya aquel espíritu que solías tener cuando me decías que si hubieras sido la esposa de Hércules, habrías realizado seis de sus trabajos, y ahorrándole a tu esposo otros tantos sudores. No te entristezcas, Cominio. Adiós. Adiós, esposa mía, madre mía. Me seguirá yendo bien. Y tú viejo y leal Menenio, más saladas son tus lágrimas que las de un joven y veneno para tus ojos. Mi antiguo general, te he visto impasible, y has contemplado a menudo espectáculos crudos que endurecen el alma. Diles a estas afligidas mujeres que es tan necio llorar los golpes inevitables como reírse de ellos."
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Aufidio",
+    "cita": "¡Oh, Marcio, Marcio! Cada palabra que ahora has dicho ha arrancado de mi corazón una raíz de antiguo odio. Si Júpiter desde aquella nube profiriera cosas divinas y dijese: «Eso es verdad», no le creería más que ahora a ti, nobilísimo Marcio. Permite que mis brazos rodeen ese cuerpo contra el que mi veteada lanza veces ciento se quebró despostillando a la luna con sus astillas. Aquí abrazo el yunque de mi espada, y lucho con tanto ardor y nobleza por tu amor, como con brío ambicioso contendí contra tu valor. Sábete primero que amaba a la doncella con quien me casé; jamás un hombre exhaló suspiros más sinceros; pero ahora que te miro aquí, noble criatura, mi corazón transportado palpita con más fuerza que cuando vi a mi amada convertida en mi esposa trasponer mis umbrales. ¡Pero tú, Marte!"
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Julio César",
+    "acto": "Primer Acto",
+    "escena": "Escena Iii",
+    "personaje": "Porcia",
+    "cita": "Debo entrar, pobre de mí. ¡Qué cosa débil es el corazón de una mujer! ¡Ay, Bruto, que los cielos te ayuden en tu intento! De seguro este niño me escuchó. Bruto tiene una petición que César no atenderá. Me siento desmayar. Corre, Lucio, saluda de mi parte a tu señor, dile que estoy contenta. Cuando vuelvas repíteme lo que él te haya dicho.<br><br><strong>TERCER ACTO ESCENA</strong><br>I Clarines."
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Otelo",
+    "acto": "Tercer Acto",
+    "escena": "Escena I",
+    "personaje": "Emilia",
+    "cita": "Sí, más de una docena, e incluso sobrarían para llenar el mundo por el cual se atrevieran. Mas pienso que la culpa es del marido si peca la mujer. Aflojan en el cumplimiento de sus deberes y van a derramar nuestros tesoros en los regazos extraños, o estallan en mezquinos celos y nos sujetan, o nos golpean o nos escatiman el gasto por despecho. Sentimos resentimiento y aunque somos buenas a veces nos vengamos. Que sepan los maridos que las esposas tienen como ellos sentidos: ven y huelen y tienen paladar para lo agrio y lo dulce igual que ellos. Al cambiarnos por otras ¿qué es lo que hacen? ¿No es deleite? Así lo considero. ¿Y la pasión lo nutre? Creo que sí. ¿Los rinde su flaqueza? Sí, también. ¿Y no tenemos nosotras apetitos, flaquezas y pasiones cual los hombres? Pues que nos traten bien o de otro modo los males que hacen sírvenos de ejemplo."
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Romeo",
+    "cita": "En este tiro yerras; a ella no la acierta ni Cupido; es una Diana acorazada tras su castidad; el débil arco de Amor no la hechiza, las palabras de afecto no la asedian. No la inmuta el asalto de unos ojos ni abre el regazo a una lluvia dorada. Es muy rica en belleza; su pobreza es que al morir todo se irá con ella."
+  },
+  {
+    "eje": "Mujer / feminidad / ser mujer / caracterización simbólica",
+    "obra": "Timón de Atenas",
+    "acto": "Primer Acto",
+    "escena": "Escena Iv",
+    "personaje": "Timón",
+    "cita": "Cada cual a su asiento, con tanta premura como hacia los labios de la amada. Su dieta será igual en cada sitio. No conviertan esto en uno de esos banquetes formales donde la comida se enfría mi Siéntense, siéntense. Los dioses exigen nuestro agradecimiento. Se sientan. Vosotros, grandes bienhechores, esparcid el agradecimiento sobre nuestra reunión. Haceos alabar por vuestros propios dones; mas reservad algo para dar, no sea que vuestras deidades encu Prestad a cada hombre lo bastante, de manera que nadie tenga que prestar a nadie; pues si vuestras deidades tuviesen que pedir prestado a los hombres, los hombres os abandonarían. Haced que el banquete sea más amado que el anfitrión."
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena II",
+    "personaje": "Hamlet",
+    "cita": "Ah, que esta carne demasiado, demasiado compacta se fundiese, se derritiese y resolviese en un rocío, o que el Eterno no hubiera fijado su canon contra aquel que a sí se da la muerte. ¡Oh, Dios mío, Dios mío, qué fatigosos, rancios, vanos y sin provecho me parecen los usos de este mundo! ¡Qué asco da! ¡Oh, asco, asco! Es un jardín sin desbrozar que crece hasta dar grano. Solo cosas vulgares y de índole grosera lo poseen. Haber tenido que llegar a esto: dos meses muerto apenas; no, ni siquiera dos; un rey tan excelente, que al lado de este otro era Hiperión junto a algún sátiro; tan amoroso con mi madre, que no permitiría que los vientos del cielo visitaran su rostro con rudeza. Cielo y tierra, ¿tendré que recordarlo?"
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Fray Lorenzo",
+    "cita": "<strong>LORENZO</strong><br>La aurora de ojos claros se ríe de la noche coloreando las nubes de oriente con el sol; la oscuridad, jaspeada, vacila cual borracho saliéndose del rumbo del día y de Titán. Antes que el sol avance su gran ojo de fuego, que secará el rocío y el día alegrará, he de llenar la cesta de hierbas venenosas y de mágicas flores de néctar sanador. La tierra, que es la madre de la naturaleza, es a la vez su tumba, su vi ¡Qué rica y abundante es la gracia que anida en plantas, hierbas, piedras! ¡Cuán grande es su eficacia!"
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Hamlet",
+    "acto": "Cuarto Acto",
+    "escena": "Escena Iv",
+    "personaje": "Hamlet",
+    "cita": "Estaré con vosotros enseguida, id un poco adelante. Cómo las ocasiones hablan todas en contra mía y son un acicate a la morosidad de mi venganza. ¿Qué es pues un hombre si su bien más importante y el negocio más grande de su tiempo es dormir y comer? No más que un animal. Sin duda quien nos hizo con tanta discreción, mirando al antes y al después, no nos dotó de esa capacidad ni nos dio esa razón de apariencia divina para que la dejemos sin uso enmohecerse."
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Hamlet",
+    "acto": "Cuarto Acto",
+    "escena": "Escena Iv",
+    "personaje": "Laertes",
+    "cita": "¿Qué pasa ahora? ¿Quién hace ese ruido? Oh, calor, sécame los sesos, oh, lágrimas salobres siete veces, abrasad el sentido y virtud de mis ojos. Por mi fe, tu locura será pagada al peso hasta que la balanza haya invertido el fiel. Oh, mi rosa de mayo, mi doncella querida, mi buena hermana, dulce Ofelia. Oh, cielos, ¿es posible que el buen juicio de una joven doncella resulte tan mortal como la vida de un anciano? Sutil en el amor se muestra siempre la naturaleza, y allí donde es sutil, envía una u otra preciosa figura de sí misma tras aquello que ama. OFELIA (Canta.) Con la cara desnuda dejan que se lo lleven, que sí, que no, que no, que sí, infinitas las lágrimas que en su sepulcro llueven. Adiós, palomo mío."
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Hamlet",
+    "acto": "Tercer Acto",
+    "escena": "Escena I",
+    "personaje": "Hamlet",
+    "cita": "Ser o no ser, de eso se trata; si para nuestro espíritu es más noble sufrir las pedradas y dardos de la atroz fortuna o levantarse en armas contra un mar de aflicciones y oponiéndose a ellas darles fin. Morir para dormir, no más; ¿y con dormirnos decir que damos fin a la congoja y a los mil choques naturales de que la carne es heredera? Es la consumación que habría que anhelar devotamente. Morir para dormir. Dormir, soñar acaso; sí, ahí está el tropiezo: que en ese sueño de la muerte qué sueños puedan visitarnos, cuando ya hayamos desechado el tráfago mortal, tiene que darnos que pensar."
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Antonio y Cleopatra",
+    "acto": "Primer Acto",
+    "escena": "Escena Iv",
+    "personaje": "Cleopatra",
+    "cita": "Dame el vestido, ponme la corona. Dentro de mí siento ansias inmortales. Ahora nunca más el zumo de las uvas de Egipto mojará estos labios. Las mujeres la visten. ¡Aprisa, aprisa, buena Iras! ¡Pronto! Me parece que oigo a Antonio que me llama. Lo veo que Oigo cómo se burla de la suerte de César que los dioses dispensan a los hombres para excusar después su ira. ¡Ya voy, esposo! ¡Ahora mi valor pruebe el derecho a ese nombre! Soy fuego y aire; mis otros elementos abandono a la vida más grosera. Qué, ¿han terminado? Vengan entonces y reciban el último calor que hay en mis labios. Adiós, querida Charmian. Iras, mi largo adiós. La besa.<br><br><strong>IRAS</strong><br>cae y muere. ¿Tengo el áspid en mis labios? ¿Caes?"
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Aarón",
+    "cita": "Sí, como si no hubiera cometido mil más. Incluso ahora maldigo el día (pero pienso que son pocos los que caben en la maldición) en que no hice alguna maldad de importancia como matar a un hombre, o planear cómo hacerlo; acusar a un inocente, y jurar en vano; cultivar una enemistad mortal Con frecuencia he desenterrado muertos de sus tumbas, y los he dejado a la puerta de sus amigos queridos, cuando la pena estaba casi olvidada, después de tallar en sus pieles, como sobre la corteza de un árbol, con mi cuchillo y en letras romanas, «No dejes morir tu dolor, aunque esté muerto»."
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Marco",
+    "cita": "¿Quién es? ¿Es mi sobrina, que huye tan rápido? Querida, dime algo, ¿dónde está tu esposo? Si sueño, ¡ni toda mi riqueza me despertaría! Si estoy despierto, ¡que algún planeta caiga sobre mí y me haga dormir un sueño eterno! Habla, dulce sobrina, ¿qué torvas y duras manos te han desmembrado, cortado y dejado el cuerpo sin sus dos ramas, sus dos dulces ornamentos, en cuyas sombras envolventes hasta los reyes habrían buscado dormir, impotentes ya de ganar una felicidad del tamaño de la mitad de tu amor? ¿Por qué no me hablas? Ah, un río púrpura de tibia sangre, como una fuente burbujeante sacudida por el viento, se agita y apaga Seguro algún Tereo te ha desflorado, y para que no lo descubrieras, te cortó la lengua."
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Horacio",
+    "cita": "Dos noches seguidas estos dos caballeros (Marcelo y Bernardo) tuvieron en su guardia, en el mortal vacío y en medio de la noche, el encuentro siguiente: una figura parecida a vuestro padre, armada en todo punto exactamente, de punta en blanco, aparece ante ellos, y con marcha solemne, avanza lento y majestuoso; por tres veces marchó cerca de ellos, cerca de sus ansiosos ojos aterradoramente sorprendidos, a la distancia del bastón de mando que llevaba, mi Y esto a mí, en terrible secreto, me contaron, y yo con ellos la tercera noche hice la guardia, durante la cual, como me habían dicho ambos, en esa forma misma, haciendo verdadera con toda exactitud cada palabra, llega la aparición. Yo había conocido a vuestro padre: no son más parecidas"
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Antonio y Cleopatra",
+    "acto": "Primer Acto",
+    "escena": "Escena Iv",
+    "personaje": "Cleopatra",
+    "cita": "Señor, no comeré carne, ni beberé, señor, y si fuere preciso decir cosas triviales, no hablaré tampoco. Arruinaré esta habitación mortal haga lo que haga César. Sepa usted, señor, que yo no estaré maniatada en la corte de su amo ni castigada jamás con la sobria mirada de la insípida Octavia. ¿Me alzarán acaso para exponerme a la reprobación de la plebe romana? ¡Mejor que una zanja en Egipto sea para mí apacible tumba! ¡Mejor yazga yo desnuda en el lodo del Nilo para que los mosquitos depositen sobre mí sus huevos y me vuelvan aborrecible! ¡Se conviertan más bien las altas pirámides de mi país en un patíbulo de donde me cuelguen con cadenas!"
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Aufidio",
+    "cita": "Todas las plazas se le rinden antes de que les ponga sitio, y los nobles de Roma están con él. Los senadores y patricios también lo quieren; los tribunos no son militares, y su gente tan precipitada será para perdonarlo, como fue apresurada para expulsarlo de ahí. Creo que será para Roma como el quebrantahuesos para el pez, que lo aprisiona por soberanía de la naturaleza. Primero fue para ellos un servidor fiel, pero no pudo llevar sus honores con ecuanimidad, bien haya sido por orgullo, que como consecuencia del éxito continuo, siempre daña al hombre afortunado, bien por falta de juicio en el aprovechamiento de las ocasiones de que era dueño; o bien por su naturaleza, el no ser más que una sola cosa, sin moverse del casco a la investidura, sino disponiendo la paz con la misma rudeza y gar…"
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "Otelo",
+    "acto": "Tercer Acto",
+    "escena": "Escena I",
+    "personaje": "Yago",
+    "cita": "Sería, creo, empresa difícil inducirlos a dejarse sorprender así. Entonces… ¡Maldición! No, buen cuidado tendrán de que jamás los miren otros mortales ojos que los suyos. Entonces ¿cómo, cuándo, de qué suerte? ¿Qué he de deciros? ¿Cómo convenceros? Es imposible que veáis tal cosa aunque estuviesen rijosos como chivos, ardientes como monos, lujuriosos como encelados lobos, lerdos, torpes cual la ebria estupidez. No obstante, os digo que si os convencen pruebas manifiestas, indicios claros que a la puerta misma de la verdad conduzcan, tales tengo."
+  },
+  {
+    "eje": "Muerte (no literal)",
+    "obra": "El rey Lear",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Lear",
+    "cita": "Pues la sinceridad entonces será tu dote. Por el sagrado brillo del sol, por la noche y los misterios de Hécate, por todos los designios de los astros que nos hacen nacer y morir, renuncio aquí y ahora a mi cariño, a todo parentesco y vínculo de sangre. Una extraña serás en mi alma desde hoy y por siempre. El bárbaro escita, o el que su hambre sacia devorando a su prole, en mí encontrarán tanta piedad, consuelo y cobijo como tú, que fuiste una vez hija mía.<br><br><strong>KENT</strong><br>Mi buen señor… LEAR Quieto, Kent. No te pongas Más que a nadie la quise, y descansar soñé mecido en sus brazos. ¡Fuera, y que no te vea! Mi paz sea mi tumba ahora que a la hija quito el corazón del padre. Llamad al rey de Francia. ¿No os movéis? Llamad al de Borgoña."
+  },
+  {
+    "eje": "Vejez",
+    "obra": "El rey Lear",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Gloucester",
+    "cita": "(Lee.) «Estos preceptos de venerar la edad nos amargan el mundo en nuestros años mejores, apartándonos de nuestra fortuna hasta que la vejez nos impide saborearla. Empiezo a encontrar inútil y vana esa esclavitud que nos hace sufrir la tiranía de una vejez más poderosa por nuestra conformidad que por su fuerza. Reúnete conmigo, para que te hable más de todo esto. Si nuestro padre quisiera dormir hasta que yo le despertase, tú disfrutarías de la mitad de sus rentas, manteniendo todo el afecto de tu hermano, Edgar.» ¡Ah, conspiración! «Dormir hasta que yo le despertase, disfrutarías de la mitad de sus rentas.» ¡Mi hijo Edgar! ¿Ha tenido él mano para escribir esto, corazón y seso para concebirlo? ¿Cuándo te ha llegado? ¿Quién la trajo?"
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Volumnia",
+    "cita": "No, no te alejes así de nosotros. Si fuera de tal modo que nuestra petición tuviera por objeto salvar a los romanos destruyendo así a los volscos a quienes sirves, podrías condenarnos como venenosas a tu honor. Pero no, nuestra petición es que los reconcilies: en tanto que los volscos puedan decir «Tal clemencia hemos demostrado», los romanos, «Tal hemos recibido», y que cada cual respectivamente te aclame gritando: «¡Bendito seas por lograr la paz!»."
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Timón de Atenas",
+    "acto": "Primer Acto",
+    "escena": "Escena Iv",
+    "personaje": "Alcibíades",
+    "cita": "¡Los dioses les conserven la vejez lo bastante para que vivan apenas en los huesos, y no pueda verlos nadie! Estoy peor que loco. He mantenido a raya a sus enemigos mi ¿Y todo, para esto? ¿Es este el bálsamo que el Senado usurero vierte en las heridas del capitán? ¡El destierro! No me viene mal. No me incomoda ser desterrado; es causa digna de mi encono y furia; me da licencia de atacar a Atenas. Animaré a mis tropas descontentas y me haré de seguidores. Es honra tener el mayor número de enemigos; el soldado debe soportar los ultrajes tan poco como los dioses.<br><br><strong>ESCENA</strong><br>VII"
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Otelo",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Yago",
+    "cita": "Pon el dedo así y déjate aconsejar. Fíjate con qué violencia primero se enamoró del moro solo por echárselas de valiente y contarle mentiras fantásticas. ¿Y crees tú que va a seguir amándolo por su charlatanería? No lo crea así tu corazón discreto. Debe tener con qué nutrir sus miradas ¿y qué deleite tendrá en mirar al diablo? Cuando la sangre se vuelva sosa a fuerza de gozar, debe existir, para inflamarla de nuevo y darle a la saciedad nuevo apetito, atractivo en el aspecto, semejanza en la edad, costumbres y encantos, de todo lo cual carece el moro. Ahora, por falta de estas cualidades, su delicada juventud se sentirá engañada, empezará a sentir náuseas, a detestar y aborrecer al moro; su misma naturaleza la instruirá y la empujará a alguna segunda elección."
+  },
+  {
+    "eje": "Vejez",
+    "obra": "El rey Lear",
+    "acto": "Cuarto Acto",
+    "escena": "Escena I",
+    "personaje": "Edgar",
+    "cita": "Mejor así, sabiéndome humillado, que seguir humillado y halagado. Lo peor, lo que la suerte trata con desdén más soez, mantiene una esperanza, vive sin miedo. El cambio deplorable es desde lo mejor; de lo peor se pasa al júbilo. Bienvenido, pues, aire insubstancial que en mis brazos recibo. Este infeliz que soplando has llevado a lo peor no debe nada a tus ráfagas. Pero, ¿quién viene? ¿Mi padre con sus ojos fuera? ¡Mundo, mundo, qué mundo! Solo por tus raros vuelcos, que odioso te hacen, aceptamos llegar a la vejez.<br><br><strong>EDGAR</strong><br>se aparta."
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Julio César",
+    "acto": "Cuarto Acto",
+    "escena": "Escena 1",
+    "personaje": "Casio",
+    "cita": "Bien, nobilísimo amigo. Que los dioses de hoy nos sean favorables, para que la vejez nos sorprenda unidos en la paz. Mas, puesto que la suerte humana es siempre incierta, supongamos que ocurriera lo peor. Si perdemos esta batalla, esta será la última vez que hable contigo, Bruto. ¿Has decidido qué harás en ese caso?"
+  },
+  {
+    "eje": "Vejez",
+    "obra": "El rey Lear",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Goneril",
+    "cita": "En sus mejores y más firmes años ya era impetuoso; por eso hemos de esperar de su edad no solo los defectos desde hace tiempo arraigados en su carácter, sino también los desordenados caprichos que la vejez colérica y enfermiza trae consigo."
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Hamlet",
+    "acto": "Tercer Acto",
+    "escena": "Escena I",
+    "personaje": "Hamlet",
+    "cita": "No seas tampoco demasiado manso; sino que tu propia discreción sea tu tutor. Adapta la acción a la palabra, la palabra a la acción, con esta observación especial: que no atropelle la moderación de la Naturaleza: pues todo lo que así se exagera se aleja del propósito de la actuación, cuyo fin, lo mismo al principio que ahora, fue y es presentarle como quien dice un espejo a la Naturaleza; mostrar a la Virtud sus propios rasgos, al Desdén su propia imagen, y a la edad y al cuerpo mismo del tiempo su forma y su sello. Ahora bien, si esto se exagera, o se hace con torpeza, aunque haga reír al ignorante, no puede sino disgustar al juicioso; cuya censura debe en tu apreciación pesar más que todo un teatro de los otros."
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Voltemand",
+    "cita": "La respuesta más cumplida a vuestros parabienes y saludos. De buenas a primeras nos dijo que suprime las levas del sobrino, que a él le parecía que eran preparativos contra el rey de Polonia, pero indagando más, encontró que en verdad se dirigían contra vuestra alteza, y apenado por ello de que su enfermedad, su edad e invalidez fueran manipuladas falsamente, manda orden de arresto a Fortinbrás, la cual él pronto acata, acepta los regaños del monarca noruego, promete ante su tío nunca más alzarse en armas contra vuestra alteza, tras de lo cual el viejo rey noruego, exultando de dicha,"
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Hamlet",
+    "acto": "Cuarto Acto",
+    "escena": "Escena Vi",
+    "personaje": "Rey",
+    "cita": "Nada más que una cinta en la gorra de un joven, mas también necesaria, porque la juventud casa tan bien con aquella librea ligera y descuidada que reviste, como la edad madura con sus pieles y sus grandes ropajes, signos de bienestar y gravedad. No hace ni un par de meses que estuvo aquí un caballero de Normandía; yo mismo he visto a los franceses, y he servido en su contra, y son grandes jinetes; pero aquel galán parecía embrujado; se crecía en la silla, y hacía hacer a su caballo tales prodigios cual si formara parte de su cuerpo y poseyera una mitad de la naturaleza de aquel noble animal; superó de tal modo mi imaginación, que no puedo forjar tantas formas y mañas como él ejecutó."
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Macbeth",
+    "acto": "Segundo Acto",
+    "escena": "Escena Ii",
+    "personaje": "Malcolm",
+    "cita": "Macduff, pasión tan noble, hija de integridad, de mi alma ya ha barrido todo negro escrúpulo, conciliado mis pensamientos a tu honra y buena fe. El diabólico Macbeth por muchas de esas mañas ha intentado hacerse conmigo en mano, y cuerda precaución me libra de apresurada credulidad. ¡Mas Dios arriba medie No he ni aun trato tenido con mujer; ni he perjurado nunca; apenas si lo mío propio he codiciado; mi fe jamás he roto; no traicionaría ni al diablo con su socio; y gozo en la verdad no menos que en la vida: mi primer embuste fue este sobre mí."
+  },
+  {
+    "eje": "Vejez",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Tito",
+    "cita": "Ven, Marco, ven; parientes, este es el camino. Pequeño señor, muéstrame tu talento con el arco. Veamos, extiéndelo todo, y endereza esto hacia aquí. Terras Astrae reliquit. Recuerda, Marco, que ella se ha ido, voló. Señores, preparen sus armas. Ustedes, primos, sondeen el océano, y arrojen sus redes; con suerte tal vez la atrapen en el mar; aunque allí hay tan poca justicia como en la tierra. No; Publio y Sempronio, deben hacerlo; deben cavar con pico y pala, y taladrar el más recóndito centro de la tierra. Entonces, cuando lleguen al reino de Plutón, les ruego que le ¡Ah, Roma!"
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Timón de Atenas",
+    "acto": "Cuarto Acto",
+    "escena": "Escena I",
+    "personaje": "Timón",
+    "cita": "¡Que la naturaleza aún esté hambrienta, enferma como está por la crueldad del hombre! Madre común, si cuyo vi Resecad vuestro fértil y prolífico vientre; que no produzca más al hombre ingrato."
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Aufidio",
+    "cita": "¡Sí, Marcio! ¡Cayo Marcio! ¿Crees que voy a honrarte con ese robo, el nombre que robaste, Coriolano, en Corioles? Ved, señores y jefes del Estado, pérfidamente ha traicionado vuestra empresa, y entregado, por unas cuantas lágrimas saladas, la ciudad de Roma que os pertenecía; sí «vuestra ciudad», repito, a su esposa y a su madre, rompiendo así su juramento y resolución igual que un hilo de seda podrido, sin admitir para nada consejo de guerra. Ante las lágrimas de su nodriza,"
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Julieta",
+    "cita": "¿Que dónde está mi madre? Está en la casa, ¿dónde va a estar? Qué respuestas tan raras: «Tu amor, como un honesto caballero, dice: ¿dónde está tu madre?» NODRIZA ¡Pardiez, qué ardor! Te lo ruego, serénate. ¡Buen remedio eres tú para mis huesos! En adelante, hazte tus encargos."
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "El rey Lear",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Lear",
+    "cita": "Espero que así sea, señor. Naturaleza, óyeme; escucha bien, diosa amada: suspende tus designios si es que querías hacer a esta criatura fértil. Lleva la esterilidad a su vientre. Seca los órganos de la reproducción, y que nunca su degradado cuerpo alumbre un niño que le dé honra. Si ha de engendrar, haz que su hijo sea de hiel, y viva para darle el más perverso y cruel tormento. Que con arrugas marque su frente joven, en sus mejillas abra surcos de lágrimas, desprecie y haga burla de sus desvelos de madre, para que sienta… para que ella sienta que un hijo ingrato hiere más que el colmillo de una serpiente. ¡Vámonos, vámonos!"
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Coriolano",
+    "cita": "Este último viejo, que despaché con el corazón partido a Roma, me amaba más que un padre; a decir verdad, me divinizaba. Mandármelo fue el último recurso que tuvieron, y por su antiguo afecto, aunque me he mostrado agrio con él, de nuevo he vuelto a ofrecer las primeras condiciones, que rechazaron antes, y que no pueden aceptar ahora; solo para honrarlo a él que creía poder hacer más, he cedido un poco. Ni a embajadas de Estado ni a amigos particulares, de ahora en más les prestaré oídos. Gritos fuera. ¿Pero qué voz es esta? ¿Acaso me sentiré tentado a quebrantar mi juramento en el instante mismo en que lo hago? No, de ningún modo."
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Tito",
+    "cita": "Ven, ven, Lavinia. Tus enemigos están atados. Tápenles la boca. Que en vez de hablar oigan las temibles palabras que he de decir yo. Suframos, Quirón y Demetrio: he aquí el manantial que ustedes mancharon con lodo, el buen verano que mezclaron con su invierno. Mataron a su esposo, y por esa vil bajeza dos de sus hermanos fueron condenados a muerte, y mi mano cortada fue objeto de burla. Las dos dulces manos de ella, su lengua y, más preciada que las manos o la lengua, forzaron su inmaculada castidad, traidores inhumanos. ¿Qué dirían si los dejara hablar? Malvados, por vergüenza no deberían implorar piedad. Escuchen, infelices, qué martirio he concebido: me queda aún esta mano para degollarlos, mi"
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Hamlet",
+    "acto": "Cuarto Acto",
+    "escena": "Escena Vi",
+    "personaje": "Rey",
+    "cita": "Bueno, por dos razones especiales que tú (tal vez) encontrarás endebles, y sin embargo para mí son fuertes. Primeramente, que la reina su madre solo ve por sus ojos, y en cuanto a mí (por mi bien o mi mal, no sabría decirlo), es tan consustancial a mi vida y mi alma, que así como la estrella se mueve solo dentro de su esfera, yo no puedo moverme sino en la esfera de ella. La otra razón de que no pueda yo ir ante un pleito público es el profundo amor que la gente común le tiene, y que bañando en ese afecto todas sus faltas, como aquella fuente que convertía la madera en piedra, convertiría en gracia todas sus cadenas. De tal manera que mis flechas, de demasiado leve hechura para tan fuerte viento, se revolverían contra mi propio arco, en vez de contra aquello adonde yo las disparaba."
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Cominio",
+    "cita": "No lo escuchará jamás.<br><br>SICINIO ¿No?<br><br>COMINIO Os digo que está sentado en un sitial de oro, los ojos enrojecidos como si quisiera incendiar a Roma, y su resentimiento es como el carcelero de su piedad. Me arrodillé ante él, y en tono apenas audible me dijo: «Levántate», y así me despidió con un ademán mudo de su mano. Por escrito lo que pensaba hacer lo mandó decir después, y también, lo que no haría, estando ya comprometido a sus condiciones. Así es que toda esperanza es vana, si no es por su noble madre y su mujer, quienes, según he oído, intentan implorar clemencia para su patria. Por consiguiente vámonos de aquí, y con nuestros corteses ruegos apresurémoslas."
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena V",
+    "personaje": "Julieta",
+    "cita": "¡Adiós! Dios sabe cuándo volveremos a vernos. Un espanto me estremece y en mí congela el calor de la vida. Las volveré a llamar, que me consuelen. ¡Nodriza! Pero no, ¿de qué valdría? Yo sola tengo que representar la amarga escena. ¡Ven, frasco! ¿Y si este filtro no me hiciese efecto? ¿Me tendré que casar por la mañana? No, esto lo impedirá; tú, quieta aquí. Deja la daga. ¿Y si el astuto fraile me ha ¿Y si, una vez ya dentro de la tumba, me despertase antes de que Romeo pueda salvarme? ¡Horrible pensamiento!"
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Hamlet",
+    "acto": "Tercer Acto",
+    "escena": "Escena I",
+    "personaje": "Hamlet",
+    "cita": "Hay cartas ya selladas, y mis dos compañeros de colegio, de los cuales me fío como de serpientes de afilados colmillos, llevan orden de allanarme el camino y llevarme al desastre. Así se haga, que lo divertido es ver al ingeniero con el propio petardo reventado, y muy mal ha de ser si yo no excavo diez codos por debajo de sus minas, y los hago volar hasta la luna. Ah, nada es más dulce que dos astucias que de frente chocan directamente. Este hombre me hará empacar. Arrastraré sus restos hasta el cuarto de al lado. Madre, muy buenas noches. Por cierto que este canciller se ha vuelto bien discreto, tranquilo, grave al fin, él que en vida fue un pobre fantoche parlanchín. Vamos, señor, acabemos con vos."
+  },
+  {
+    "eje": "Maternidad",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Marcio",
+    "cita": "Ya basta, te ruego. Mi madre, que goza de privilegio para exaltar su sangre, me causa pena cuando me alaba. He hecho lo mismo que vosotros habéis hecho, o sea lo que puedo; impulsado por mi patria, al igual que vosotros. El que tan solo haya puesto por obra su propósito ha logrado más que yo.<br><br><strong>COMINIO</strong><br>No seréis la tumba de vuestro merecimiento. Roma debe conocer el valor de los suyos. Sería un encubrimiento aun peor que un robo, y no menos que una difamación, ocultar vuestras hazañas y callar aquello que, proclamado hasta la cúspide y la cima del elogio, parecería solo modestia. Por tanto os ruego (en señal de lo que sois, no para recompensar lo que habéis hecho) que me escuchéis delante del ejército."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Ciudadano",
+    "cita": "<strong>PRIMERO</strong><br>Se nos considera ciudadanos pobres; a los patricios, ricos. Lo que la autoridad ya no puede consumir, nos aliviaría a nosotros. Si nos cedieran siquiera lo que les sobra, mi La flacura que nos aflige, reflejo de nuestra miseria, es como un inventario para hacer la cuenta de su abundancia. Nuestro sufrimiento es ganancia para ellos. Venguemos esto con nuestras picas, antes que nos convirtamos en esqueletos. Porque los dioses saben que digo esto con hambre de pan, no con sed de venganza."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Hamlet",
+    "cita": "Sí pues, id con Dios. Ahora estoy solo. ¡Ah, qué bribón y vil granuja soy! ¿No es monstruoso que un actor como este, solo en una ficción, solo en el sueño de una pasión, pueda forzar su alma de tal modo hasta su idea entera; que por su efecto palidezca todo su rostro, haya en sus ojos lágrimas y desvarío en su expresión, se le quiebre la voz, y todas sus funciones se ajusten, con sus formas, a su idea? ¿Y todo eso por nada? ¿Por Hécuba? ¿Qué es para él Hécuba, o que es él para Hécuba, que pueda él llorar por ella? ¿Qué haría si tuviera los motivos y la consigna para la pasión que tengo yo?"
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Coriolano",
+    "cita": "Mi nombre es Cayo Marcio que te ha hecho particularmente a ti, y a los volscos todos mucho daño y perjuicio, como atestiguar puede el sobrenombre que uso: Coriolano. El penoso servicio, los peligros extremos y las gotas de sangre vertidas por mi ingrato país, no son pagadas sino con este sobrenombre, buen memorial y testimonio del odio y disgusto que hacia mí debes sentir. Solo ese nombre resta. La crueldad e inquina de la plebe, toleradas por nuestros cobardes nobles, que a una me abandonaron todos, devoró lo demás y consintió en que por voz de esclavos fuese yo echado a gritos de Roma."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Demetrio",
+    "cita": "No compares a Escitia con la ambiciosa Roma. Alarbo va a descansar y nosotros sobrevivimos para temblar bajo la amenazante mirada de Tito. Mantente firme, pues, nob"
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Aarón",
+    "cita": "Qué vergüenza, amíguense, y únanse en vez de pelear. Ambos deben tener este plan de acción y esta estratagema, y por eso acordar que lo que no puedan llevar a cabo, deben por fuerza lograrlo como puedan. Reciban esto de mí: Lucrecia no era más casta que esta Lavinia, el amor de Basiano. Debemos seguir un camino más rápido que este largo languidecimiento, y yo he encontrado la vía. Nobles señores, se anuncia una solemne cacería. Allí se apiñarán las adorables damas romanas. Las sendas del bosque son amplias y espaciosas, y hay muchos lugares poco frecuentados, aptos por su naturaleza a la violación y la villanía. Persigan entonces a esa delicada liebre y ataquen su nicho por la fuerza, no con palabras; esta vía, y ninguna otra, los mantendrá con esperanzas."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Tamora",
+    "cita": "Muéstrame a mil que hayan hecho daño, y me vengaré de todos ellos.<br><br><strong>TITO</strong><br>Mira alrededor, en las perversas calles de Roma y, cuando encu Ve con él, y cuando sea tu suerte encontrar a otro igual a ti, buen Ultraje, apuñálalo; es un violador. Tú ve con ellos. En la corte del emperador hay una reina atendida por un moro; la reconocerás sin duda por tu propia figura, pues se te parece de arriba abajo; te lo ruego, cáusales una muerte violenta; ellos han sido violentos conmigo y los míos."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena Iii",
+    "personaje": "Marco",
+    "cita": "Ahora es mi turno de hablar. Vean a ese niño: Tamora lo trajo al mundo, engendro de un moro profano, arquitecto principal y maquinador de esta pena. El maldito se encu Juzguen ahora si Tito tuvo razón para vengarse de estos agravios impronunciables que sobrepasan lo que se puede resistir o lo que cualquier ser viviente habría soportado. Ya han oído la verdad. ¿Qué dicen, romanos? ¿Hemos hecho algo impropio? Muéstrennos en qué, y desde aquí desde donde nos ven, defendiendo lo que resta de los Andrónicos, tomados de la mano nos arrojaremos todos sin pensarlo, y sobre las piedras rugosas reventaremos nuestras almas, y con nosotros se clausurará nuestra casa. Hablen, romanos, hablen y, si dicen que lo hagamos, mano con mano, Lucio y yo nos precipitaremos."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Centinela",
+    "cita": "<strong>PRIMERO</strong><br>Entonces debéis aborrecer a Roma igual que él. ¿Podéis esperar, después de haber echado fuera de vuestras puertas a su verdadero defensor, y en un arrebato de ignorancia popular Estáis condenados; nuestro general ha jurado dejaros fuera de todo alivio y perdón."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Hamlet",
+    "acto": "Tercer Acto",
+    "escena": "Escena I",
+    "personaje": "Hamlet",
+    "cita": "Ahora lo podría hacer perfectamente, ahora que está rezando; lo haré ahora, y así me habré vengado. Habría que pensarlo: un villano mató a mi padre, y por ese motivo yo, su único hijo, mando a dicho villano al paraíso. Esto es premio y salario, no venganza. él despachó a mi padre en un momento turbio, ahíto de su pan, y con todos sus crímenes en plena floración, lozanos como mayo; cuál será el saldo de su cuenta, nadie puede saberlo, salvo el cielo, pero en medio de nuestra circunstancia y del curso de nuestro pensamiento, pesada debe ser su carga. ¿Y quedaré vengado entonces dando cuenta de él en el momento que está purificando su alma, que está listo y maduro para dar ese paso? No."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Coriolano",
+    "cita": "Como actor bobo, he olvidado ahora mi papel y pierdo el hilo, hasta hacer el más espantoso ridículo. Oh, carne de mi carne, perdona mi crueldad, pero no digas que por esa razón perdone a Roma. ¡Ay, un beso largo como mi exilio, dulce cual mi venganza! Pues por la celosa reina del cielo, ese beso me traje de ti, querida, y mi labio fiel virginalmente lo ha conservado desde entonces. ¡Oh, dioses! Hablo como charlatán y a la más noble madre de este mundo dejo de saludar. ¡Húndete rodilla mía en el suelo! Muestra más la huella de tu indeleble deber que la de otros hijos."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "El rey Lear",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Lear",
+    "cita": "¡No apliquéis la razón a la necesidad! Los mendigos más míseros tienen en su penuria cosas superfluas. Si a la naturaleza dais solo lo necesario, la vida humana vale no más que la animal. Eres una dama. Si lo único lindo es ir bien abrigado, no hay necesidad natural en lo que llevas, lindo y de poco abrigo. Lo que se necesita… Cielos, dadme aguante, es lo que necesito. Dioses, aquí me veis, pobre y viejo, tan cargado de penas como de años, por ambos afligido. Si subleváis vosotros el corazón de ellas contra su padre, no hagáis de mí un bobo que sumiso lo sufre. Prestadme una ira noble, y no dejéis que el llanto, arma de las mujeres, manche mi rostro viril."
+  },
+  {
+    "eje": "Venganza",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Aarón",
+    "cita": "Nob ¿Qué significan mi mirada mortalmente fija, mi silencio y mi nublada melancolía, mi vellón de lanudo pelo que ya se desenrula, como una víbora que se desenrosca presta a dar un golpe fatal? No, señora, no son signos de Venus; llevo la venganza en el corazón, la muerte en la mano, y el desagravio y la sangre baten en mi cabeza. Oye, Tamora, emperadora de mi alma que no espera más cielo que yacer contigo, este es para Basiano el día fatídico: su Filomela debe perder hoy la lengua; tus hijos deben saquear su castidad, y lavar sus manos con la sangre de Basiano. ¿Ves esta carta? Tómala, te lo ruego, y dale al rey este rollo y su plan fatal. Ahora no me preguntes más; nos espían."
+  },
+  {
+    "eje": "Odio",
+    "obra": "Timón de Atenas",
+    "acto": "Cuarto Acto",
+    "escena": "Escena I",
+    "personaje": "Timón",
+    "cita": "Déjame que me vuelva para verte. ¡Oh, muralla que circundas a estos lobos, húndete en la tierra y no cerques más a Atenas! ¡Matronas, volveos lascivas! ¡Abandonad a los hijos, obediencia! ¡Esclavos, tontos, arrancad al grave y rugoso Senado de su escaño, y gobernad en su lugar! ¡Oh, verde virginidad, convertíos en este instante en la peor inmundicia! ¡Y que sea ante la mirada de los padres! ¡Hombres en bancarrota, no cedáis, y en vez de devolver, sacad vuestros cuchillos y cortadle el cuello a los acreedores! ¡Robad, siervos! Insumisos bandidos son vuestros venerables amos, que roban apelando a las leyes. ¡Criada, a la cama de vuestro amo, que vuestra ama está en el burdel! ¡Adolescente, quítale a tu padre viejo y renqueante su muleta almohadillada, y rómpele con ella la cabeza!"
+  },
+  {
+    "eje": "Odio",
+    "obra": "Timón de Atenas",
+    "acto": "Cuarto Acto",
+    "escena": "Escena I",
+    "personaje": "Flavio",
+    "cita": "Buenos camara En cualquier parte que nos encontremos, seamos camaradas en nombre de Timón. Fruncidas las caras, como si fuera un campanazo fúnebre por la fortuna del amo, digamos: «Hemos visto mejores días». Tome algo cada uno. Les No, pongan las manos. Ni una palabra más; ricos en dolor y pobres para el camino, nos separamos. Se abrazan y los SIRVIENTES se marchan, cada cual por su lado. ¡Ah, la cruel desgracia que nos trae la gloria! ¿Quién no quisiera estar exento de bienes, si la riqueza lleva a la miseria y al desprecio? ¿Quién quisiera ser burlado así por la gloria, y vivir ensueños de amistad, para tener la pompa y cuanto procuran los bienes pintado apenas como el lustre falaz de sus amigos?"
+  },
+  {
+    "eje": "Odio",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Coriolano",
+    "cita": "Quisiera tener motivo para buscarlo ahí. Para desafiar su odio cara a cara. Bienvenido a la patria. Ved, estos son los tribunos del pueblo, las lenguas de la boca vulgar. Yo los desprecio porque se revisten de autoridad a ciencia y paciencia de la nobleza.<br><br><strong>SICINIO</strong><br>Alto ahí."
+  },
+  {
+    "eje": "Odio",
+    "obra": "Hamlet",
+    "acto": "Cuarto Acto",
+    "escena": "Escena Vi",
+    "personaje": "Laertes",
+    "cita": "¿Ahogado? Oh, ¿dónde?<br><br><strong>REINA</strong><br>Hay un sauce que ha crecido torcido al borde de un arroyo y sus pálidas hojas copia en la corriente cristalina. Allá con guirnaldas fantásticas fue ella, tejidas de ranúnculos, ortigas, margaritas, y esas largas orquídeas a las que los pastores desenvueltos dan un nombre más burdo, pero que nuestras castas doncellas conocen bajo el nombre de dedos de muerto; allí por las pendientes ramas, para colgar sus hierbas en corona intentando trepar, una envidiosa rama se rompió, y los trofeos que con hierbas tejiera, y ella misma, cayeron en el lloroso arroyo; sus vestidos se abrieron, y a modo de sirena, la mantuvieron por un tiempo a flote, durante el cual ella cantaba trozos de antiguas melodías, como quien no se percatase de su propia desdicha o como una criatura nat…"
+  },
+  {
+    "eje": "Odio",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Plebeyos",
+    "cita": "¡Así será, así será!<br><br><strong>CORIOLANO</strong><br>¡A vosotros, jauría de perros callejeros cuyo aliento aborrezco como las miasmas de los pantanos más pestilentes; cuyo afecto estimo como los esqueletos de insepultos muertos que me corrompen el aire! ¡Yo os destierro! ¡Y permaneced aquí con vuestra incertidumbre! ¡Que todo débil rumor estremezca vuestros corazones! ¡Y que vuestros enemigos con el meneo de sus penachos os avienten a la desesperación! ¡Continuad ejerciendo el poder de desterrar a vuestros defensores, hasta que a la larga vuestra ignorancia, que no aprende hasta que no experimenta, haciendo excepción solo de vosotros, por siempre vuestros propios enemigos, os entregue, cautivos vergonzantes, a alguna nación que os haya conquistado sin combatir siquiera!"
+  },
+  {
+    "eje": "Odio",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Coriolano",
+    "cita": "Gracias, señor. Adiós. ¡Oh, mundo, tus traicioneras mudanzas! Los amigos que acaban de jurarse amistad constante, y cuyos dos pechos no parecen tener sino un solo corazón, y cuyas horas, cuya cama, cuya comida y ejercicio transcurren siempre juntos, unidos como quien dice en amor inseparable, en una hora, y por una bagatela, estallan en la más acerba enemistad. Así también los más encarnizados enemigos, cuyos ímpetus y maquinaciones han interrumpido su sueño para atraparse el uno al otro, por algún azar, una vil triquiñuela que no vale un comino, se convierten en amigos queridos y Lo mismo haré yo: aborrezco el lugar donde nací y pongo mi amor en esta ciudad enemiga. Entraré: si me mata, hará justicia; si me acepta, serviré a su país.<br><br><strong>ESCENA</strong><br>V Sala en casa de Aufidio. Música."
+  },
+  {
+    "eje": "Odio",
+    "obra": "Timón de Atenas",
+    "acto": "Primer Acto",
+    "escena": "Escena Ii",
+    "personaje": "Apemanto",
+    "cita": "¿Que fluya por aquí? Valiente compañero; está alerta a las mareas. Esas saludes harán que enfermen tus riquezas, Timón. En cambio esto es demasiado débil para inducir al pecado: el agua pura, que jamás hundió al hombre en el lodo. Esta y mi comida son iguales: no hay diferencia. Demasiado arrogantes son las fiestas para mostrar a los dioses agradecimiento. La oración de APEMANTO. Dioses inmortales, no os pido lucro; no ruego por nadie sino por mí mismo. Concededme nunca ser tan tonto de confiar en el juramento o compromiso de un hombre, en los lloros de una puta, o en un perro que parece dormido, o en un custodio de mi libre albedrío o en mis amigos, si los necesitara. Amén. Así que a comer se dijo: yo como raíces, y los ricos pecan. Come. ¡Que mucho reconforte tu buen corazón, Apemanto!"
+  },
+  {
+    "eje": "Odio",
+    "obra": "Timón de Atenas",
+    "acto": "Cuarto Acto",
+    "escena": "Escena Iv",
+    "personaje": "Alcibíades",
+    "cita": "Anuncia a esta cobarde y lasciva ciudad nuestra pavorosa llegada. Suena un toque de parlamento, los senadores aparecen en la muralla. Hasta ahora habéis sobrevivido, colmando vuestras vidas de toda clase de licencias, y haciendo de vuestras voluntades la medida de la justicia; hasta ahora, yo mismo y quienes dormitaban a la sombra de vuestro poder hemos vagado terciadas las armas y en vano nos hemos quejado de nuestros sufrimientos. Maduro es ya el momento para que el tuétano humillado, fuerte ya en su dueño, grite, de por sí: «¡No más!». Ahora palpitará el corazón de los ofendidos sin voz sentados sobre vuestros cómodos escaños, y vuestro arrogante desprecio jadeará de miedo en hórrida huida."
+  },
+  {
+    "eje": "Odio",
+    "obra": "Otelo",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Brabancio",
+    "cita": "¡Asqueroso ladrón! ¿Dónde has metido a mi hija? Maldito como eres, has debido hechizarla. Apelo a todo ser que tenga juicio, si a no estar cautiva con mágicas cadenas ¿podría una doncella tan tierna, tan bella y tan dichosa, tan contraria a casarse que se esquivaba los más ricos y apuestos galanes del país, haber huido, a riesgo de incurrir en la burla universal, de la patria potestad para ir a ampararse en el tiznado seno de alguien como tú, que temor y no deleite inspira? Juzgue el mundo si no es evidente que practicaste con ella odiosos encantamientos, que engañaste su tierna juventud con viles drogas o con minerales que entorpecen la sensibilidad. Haré que esto se investigue: es probable, es palpable al pensamiento."
+  },
+  {
+    "eje": "Odio",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Marcio",
+    "cita": "El que quiera dirigirte a ti buenas palabras adulará de modo por demás aborrecible. ¿Qué es lo que pedís, perros callejeros, que no queréis ni la guerra ni la paz? La una os asusta; os El que a vosotros se confía, cuando debiera hallaros leones, os halla liebres; gansos, en vez de zorros. No sois más de fiar, no, que el carbón encendido sobre el hielo o el granizo en el sol. Vuestra virtud consiste en honrar a aquel a quien sojuzga su delito, y en maldecir por ello a la justicia. Quien merece grandeza, merece vuestro odio, y vuestras inclinaciones son cual apetito de enfermo que con más ansia desea lo que acrece más su mal. El que depende de vuestro favor nada con aletas de plomo y derriba robles con juncos. ¡Que os ahorquen! ¿Fiarse de vosotros?"
+  },
+  {
+    "eje": "Odio",
+    "obra": "Timón de Atenas",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Poeta",
+    "cita": "Se lo revelaré. Vea cómo gentes de condición cualquiera, y de cualquier índole, tanto las locuaces y evasivas como las graves y austeras, ofrecen sus servicios al señor Timón. Su gran fortuna, dependiente de su naturaleza buena y generosa, somete y apropia para su amor y atención toda clase de corazones; sí, desde el adulador con cara de espejo hasta Apemanto, a quien nada gusta más que aborrecerse; aun él se hinca de rodillas, y se va en paz, más rico tras una seña de Timón."
+  },
+  {
+    "eje": "Odio",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Tamora",
+    "cita": "Mi adorable Aarón, ¿por qué estás triste, cuando todo expresa una felicidad gozosa? Los pájaros cantan melodías en cada arbusto, la serpiente yace enroscada bajo el alegre sol, las verdes hojas se estremecen al fresco, y hacen mosaicos de sombra en el suelo. Sentémonos bajo esta dulce sombra, Aarón, mi"
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Tamora",
+    "cita": "¿Creen ustedes que no tengo razón para estar pálida? Esos dos me tentaron a venir a este lugar, un valle árido y detestable, como ven; los árboles, aunque es verano, están secos y encorvados, cubiertos con musgo y muérdago funesto. Aquí nunca brilla el sol, aquí nada retoña, excepto el búho nocturno o el cuervo fatal; y cuando me mostraban este lugar abominable, me contaron que, a una hora muerta de la noche, miles de espíritus diabólicos, de serpientes siseantes, diez mil sapos hinchados, e igual cantidad de erizos, producen gemidos tan atroces y estridentes que cualquier cuerpo mortal, si los oyese enloquecería de inmediato, o moriría de golpe. Después de contarme este cuento infernal de inmediato me dijeron que me atarían al tronco de un lúgubre tejo, y allí me dejarían morir una muerte miserable."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "El rey Lear",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Kent",
+    "cita": ". Ay, señor, ¿estáis aquí? Ni a quienes gusta la noche noches como esta gustan. Los cielos iracundos incluso aterran a los que las tinieblas recorren, haciéndolos quedarse en su cubil. Desde que hombre soy no recuerdo haber oído chispear tanto al fuego, tan hórrido estallido de truenos, tan rugientes gemidos de viento y lluvia. No puede el ser humano acarrear esa aflicción y miedo."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Marcelo",
+    "cita": "Bueno, ahora sentémonos, y dígame el que sepa por qué esta vela, igual e igual de atenta, agobia cada noche al súbdito de este país, y por qué esa diaria fundición de cañones de bronce, y el mercado extranjero de pertrechos de guerra: por qué ese apremio a los navieros cuya amarga tarea no distingue el domingo del día de semana. ¿Adónde va a parar esta afanosa prisa Que de la noche hace compañera del día? ¿Quién me puede informar?<br><br><strong>HORACIO</strong><br>Yo puedo. Al menos esto dicen los rumores: nuestro último rey, cuya imagen acaba de aparecérsenos hace un momento, fue (como bien sabéis) por Fortinbrás, rey de Noruega (empujado a tal cosa por una fatua envidia) retado a combatir."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Julio César",
+    "acto": "Cuarto Acto",
+    "escena": "Escena 1",
+    "personaje": "Titinio",
+    "cita": "No, Mesala. Era aquel. De Casio ya nada queda. Sol del crepúsculo, como tus rojos rayos te hunden en la noche, en su sangre acaba el día para Casio. ¡Se ha puesto el sol de Roma! Es el fin de nuestro día. ¡Nubes, escarcha, tinieblas, vengan todas! Todo ha acabado. La causa fue su temor a mi suerte."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Macbeth",
+    "acto": "Segundo Acto",
+    "escena": "Escena Iv",
+    "personaje": "Ross",
+    "cita": "Ah, sí, buen viejo, ya veis: el cielo, como turbado con el drama de los hombres, amenaza su sangrienta escena: por el reloj es día, pero negra noche ahoga aún la errante lámpara. ¿Es soberbia de la noche o es pudor del día, que tinieblas celen así la faz del mundo, cuando debe la viva luz besarla?"
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "El rey Lear",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Lear",
+    "cita": "Te parece gran cosa que esta pugnaz tormenta nos invada la piel; así es para ti, mas donde arraiga una gran dolencia la menor no se siente. De un oso escaparías, mas si huyendo llegaras al rugiente mar al oso le harías cara. Cuando el alma no pesa, el cuerpo siente. La tempestad de mi alma quita a mis sentidos todas las emociones salvo la que ahí late: ingratitud filial. ¿No es como si la boca desgarrara la mano que la alimenta? Daré un castigo cabal. No, no voy a llorar más. ¿En una noche así dejarme fuera? Que siga el aguacero, aguanto. ¡En semejante noche! Ay, Regan, Goneril, vuestro anciano padre, que con el corazón os dio todo… Por ahí se va a la locura. He de evitarla. Ya basta."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Menenio",
+    "cita": "Yo soy conocido como un patricio que sigue su humor, y que gusta de una copa de vino caliente sin mezcla alguna de agua del Tíber; reputado por no ser muy bueno en prestar oídos a la primera queja que oye, premioso y como yesca ante cualquier provocación insignificante; que se aviene mejor con la grupa de la noche, que con la frente de la mañana. Lo que pienso, lo digo, y gasto mi malicia en palabras. Al encontrarme con dos estadistas tales como vosotros (no puedo llamaros Licurgos) si la bebida que me dais no le sienta bien a mi paladar, pues hago gestos al probarla. Puedo decir que vuestras señorías han presentado bien el asunto, puesto que encuentro el asno metido en la mayor parte de las sílabas que pronunciáis."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Julio César",
+    "acto": "Primer Acto",
+    "escena": "Escena Iii",
+    "personaje": "Bruto",
+    "cita": "Déjalos entrar. Son los conspiradores. ¡Ah, sedición! ¿Te avergüenza lucir tu siniestra cara en plena noche cuando la maldad ronda? Entonces ¿dónde hallarás, de día, cueva tan oscura que esconda tu semblante abominable? No la busques, conjura; más te vale ocultarte en falsas cortesías; pues si sales con tu rostro verdadero ni las tinieblas del Erebo podrían impedir que delatases tu secreto."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Antonio y Cleopatra",
+    "acto": "Primer Acto",
+    "escena": "Escena Iv",
+    "personaje": "Antonio",
+    "cita": "Triplicaré mis nervios, mi corazón, mi aliento y lucharé sin piedad. Porque cuando mis horas eran felices y afortunadas, las gentes me rescataban sus vidas con una broma. Pero ahora apretaré los dientes y enviaré a las tinieblas a todo el que me detenga. Ven, celebremos otra noche de orgía. Llamen a todos mis capitanes deprimidos. Una vez más que llenen nuestras copas. Burlémonos de la campana de medianoche."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Otelo",
+    "acto": "Primer Acto",
+    "escena": "Escena Ii",
+    "personaje": "Yago",
+    "cita": "No me toques tan de cerca. Primero que ofender a Miguel Casio, querría que me cortaran la lengua de la boca. Mas estoy convencido que decir la verdad no ha de perjudicarlo para nada. Así pasó la cosa, general: cuando estábamos hablando Montano y yo, un individuo viene pidiendo auxilio perseguido por Casio, espada en mano para ejecutarlo. Señor, este caballero se interpuso entonces para detenerlo mi"
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Julio César",
+    "acto": "Primer Acto",
+    "escena": "Escena Iii",
+    "personaje": "Casio",
+    "cita": "¡Qué tonto eres, Casca! No te tocó esa chispa de ingenio de todo buen romano, o si la tienes, no la usas. Palideces y te espantas, y te maravillas ante la extraña furia de los cielos. Pero si te preguntaras por la verdadera causa de esos fuegos y esos fantasmas errantes, por qué aves y bestias pierden instinto y razón, o por qué viejos idiotas y niños devienen profetas, o por qué todo se escapa de sus normas, sus límites naturales, sus habituales talentos hasta volverse una monstruosa aberración, entonces comprenderías que el cielo los ha poseído para hacerlos instrumentos del horror y signo de algún monstruoso estado. Ahora podría, Casca, darte el nombre de aquel que, como esta noche abominable, truena, fulmina, abre las tumbas y ruge igual que el león del Capitolio."
+  },
+  {
+    "eje": "Noche (como construcción poética)",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena V",
+    "personaje": "Fray Lorenzo",
+    "cita": "<strong>LORENZO</strong><br>Seré breve, pues no me queda aliento para contar una historia tan larga. Romeo era el marido de Julieta, y ella, la fiel esposa de Romeo: yo celebré sus nupcias en secreto el día en que murió Teobaldo; y esto ocasionó el destierro de Romeo; por él lloraba ella, no por Teobaldo. Para aplacar su terrible dolor concedisteis su mano, por la fuerza, al conde Paris. Ella vino a verme y me rogó desesperadamente que impidiera el segundo matrimonio, o se daría muerte allí en mi celda. Le ofrecí, con la ayuda de mis artes, una poción somnífera que hizo el pretendido efecto y que le dio apariencia de muerta. Yo escribí a Romeo que viniese aquella noche a sacarla de su prestada tumba, cuando cediese el efecto del filtro."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Julieta",
+    "cita": "Daban las nueve cuando la envié y prometió volver en media hora. Quizá no lo ha encontrado. ¡Qué va, es que cojea! Los recados del amor deberían volar mucho más rápido que la luz cuando ahuyenta las tinieblas; por eso a Amor lo llevan las palomas y por eso Cupido tiene alas. El sol se encu Si me tuviese afecto, y sangre joven, sería más veloz que una pelota; mi voz la lanzaría hacia mi amor y él me la devolvería. Pero los viejos son como los muertos: pesados como el plomo, torpes, lentos. ¡Ya están aquí! Dulce ama, ¿qué noticias traes? ¿Lo has visto? Despide a tu sirviente."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Tamora",
+    "cita": "Sabes, triste hombre, no soy Tamora; ella es tu enemiga, y yo tu aliada. Soy la Venganza, enviada desde el reino infernal para tranquilizar al corrosivo buitre de tu pensamiento desatando la aliviadora venganza sobre tus enemigos. Baja y recíbeme en la luz de este mundo; decretemos juntos asesinato y muerte. No hay caverna o escondite, ni vasta oscuridad ni valle brumoso donde el sangriento Asesinato o la odiosa Violación puedan encubrirse sin que yo los encu"
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Julio César",
+    "acto": "Cuarto Acto",
+    "escena": "Escena 1",
+    "personaje": "Mesala",
+    "cita": "Temor a la buena suerte; esa fue la causa. Odioso Error, hijo de la Melancolía, ¿por qué confundes el entendimiento humano con sombras impalpables? Ah, Error, tan deprisa concebido; no ves nunca la luz, porque matas a la madre que te engendra."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Julio César",
+    "acto": "Primer Acto",
+    "escena": "Escena Iii",
+    "personaje": "Bruto",
+    "cita": "Tendrá que ser con su muerte. Por mi parte, no tengo más motivo para dañarle que el bien del pueblo. Le coronarán, ¡qué duda cabe! Cómo cambiará su temple es otra historia. Solo a la luz del día la serpiente se despierta, y eso exige estar alerta. Entréguenle la corona y, me temo, le habremos dado un aguijón que usará para herirnos a su antojo. El abuso de grandeza es el desgarro Siendo honestos, no puedo decir que, en César, las pasiones sometieran su razón. Mas es sabido que la humildad es el primer peldaño en la ambición que el trepador pone en su mira, y el primero que olvida, cuando en la cima, al ver las nubes, de espalda a la pendiente, desprecia el inicio de su ascenso. Eso puede hacer César, y por dicho «puede», habrá que tomar medidas."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Macbeth",
+    "acto": "Segundo Acto",
+    "escena": "Escena Iv",
+    "personaje": "Macbeth",
+    "cita": "A lo que se atreve un hombre, a eso yo me atrevo. Acércate en figura de áspero oso ruso, de armado rinoceronte, como tigre hircana; trae cualquier traza menos esa, y firmes, nunca mis nervios temblarán; o sé de nuevo vivo, y rétame a salir al yermo espada en mano: si temblando paro entonces, tenme por el rorro de una doncella. ¡Fuera, sombra espeluznante! ¡Burla irreal, fuera! Se desvanece el ánima. Bueno. Ya. En yéndose, vuelvo a ser un hombre. Por favor, seguid sentados."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Antonio y Cleopatra",
+    "acto": "Primer Acto",
+    "escena": "Escena Iv",
+    "personaje": "Antonio",
+    "cita": "Los hemos batido hasta el campamento. Que corra alguno e informe a la reina sobre nuestras proezas. Mañana antes que nos mire el sol, derramaremos la sangre que hoy se ha escapado. Doy a todos las gracias, porque con fuerte brazo han peleado, no como quien sirve una causa cualquiera, sino como si le fuera propia a cada uno como a mí. Se han mostrado todos Héctores. Alabaré tus acciones ante esta gran maga. ¡Que te llenen de dicha sus agradecimientos! A CLEOPATRA. ¡Oh tú, luz del mundo, enlaza con tus brazos mi cuello cubierto de armadura! ¡Salta hasta mi corazón, coraza y todo y cabalga triunfante sobre sus exultantes latidos! Se abrazan."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Julio César",
+    "acto": "Cuarto Acto",
+    "escena": "Escena 1",
+    "personaje": "Mesala",
+    "cita": "(Acercándose.) ¿Qué dice, mi general?<br><br><strong>CASIO</strong><br>Mesala, hoy es mi cumpleaños; en este día preciso nació Casio. Dame tu mano, Mesala. Sé testigo de que, contra mi voluntad (como ocurrió a Pompeyo), tengo que arriesgar toda nuestra libertad en una sola batalla. Tú bien sabes que concuerdo con Epicúreo y su doctrina. Ahora he cambiado de opinión, y creo, en parte, que existen los presagios. Viniendo de Sardis, dos águilas formidables se posaron en nuestros estandartes de vanguardia, y, comiendo voraces de la palma de los soldados, nos escoltaron hasta Filipo. Esta mañana emprendieron vuelo y en su lugar vi volar cuervos, buitres y aves de carroña, sobre nuestras cabezas y, desde la altura, nos miraban como a presas moribundas. Bóveda siniestra, la de sus sombras, bajo la cual nuestro ejército descansa, listo para MESALA No creas eso."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena V",
+    "personaje": "Romeo",
+    "cita": "Así lo haré. Veámosle la cara. ¡El primo de Mercucio, el conde Paris! ¿Qué me contó mi paje en el camino que mi alma, perturbada, no escuchó? Dijo algo de que el conde iba a casarse con Julieta. ¿No era eso? ¿O lo soñé? ¿O, al mencionar «Julieta», enloquecí y yo lo entendí así? ¡Dame tu mano, compañero de amargos infortunios! Te enterraré en un túmulo glorioso. ¿Un túmulo? ¡No! ¡Un faro, pobre joven!, pues yace aquí Julieta, y su belleza llena esta bóveda de luz festiva. Yace, muerte, enterrada por un muerto. Dejando a PARIS en la tumba. ¡Cuántos hombres se han sentido felices a punto de morir! A eso lo ¿Mas, cómo llamarle así?"
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Ofelia",
+    "cita": "Me tomó la muñeca, y la apretó bien fuerte; luego me aparta a la distancia de su brazo, y con su otra mano así sobre la frente, se pone a contemplar mi rostro de tal modo como si fuera a dibujarlo. Se queda así un gran rato; y por fin, sacudiéndome el brazo levemente y moviendo la cabeza así hacia arriba y abajo por tres veces, lanzó un suspiro tan lastimero y hondo que pareció resquebrajar todo su cuerpo y acabar con su ser. Hecho lo cual, me suelta, y vuelta la cabeza por encima del hombro, pareció que encontraba sin ojos su camino, pues salió por la puerta sin su ayuda, y hasta el fin dirigió solo hacia mí su luz."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Hamlet",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Polonio",
+    "cita": "Sí, trampas para bobos. Bien sé yo cuando abrasa la sangre, con qué soltura el alma presta promesas a la lengua; estas pavesas, hija, con más luz que calor, que una y otra se extinguen en su promesa misma mi De ahora en adelante escatima algo más tu virginal presencia; pon mayor precio a tus invitaciones que el de una orden de parlamentar. En cuanto al señor Hamlet, lo que debes creer es que es bien joven, y que puede moverse con una rienda mucho más abierta que la que se te puede dar a ti. En resumen, Ofelia, no creas sus promesas, pues son agentes, no del tinte que muestra su atavío, sino solicitantes de impías peticiones que hablan como si fueran procuradores santos y piadosos para engañar mejor."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Otelo",
+    "acto": "Tercer Acto",
+    "escena": "Escena I",
+    "personaje": "Otelo",
+    "cita": "Esta es la causa, esta es la causa, alma mía, no dejéis que os la nombre, estrellas castas: esta es la causa. Mas no derramaré su sangre ni heriré esa piel suya más blanca que la nieve y tersa cual alabastro sepulcral. Con todo, morir debe o engañará a otros hombres. Mato esta luz, y luego mato aquella. Si te extingo, utensilio flameante, y me arrepiento, devolverte puedo tu luz primera; si la tuya extingo, oh tú, eximio modelo de la excelsa natura, no sé dónde hallar el fuego de Prometeo que tu lumbre pueda encender de nuevo. Cuando arranco la rosa, no puedo renovar su lozanía: fuerza es que se marchite. Te aspiraré en el árbol, oh aliento perfumado, que casi persuades a la justicia a destrozar su espada. ¡Un beso… y otro más! Después de muerta quédate así y yo tras de matarte te amaré."
+  },
+  {
+    "eje": "Luz y oscuridad (como símbolos)",
+    "obra": "Romeo y Julieta",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Romeo",
+    "cita": "¡Oh, ella enseña a brillar a las antorchas! Parece suspendida del rostro de la noche como una joya en la oreja de un negro. Demasiado ideal para este mundo. Va la doncella Cuando se acabe el baile iré a Corazón, ¿has amado alguna vez? Jamás he visto una belleza igual."
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Julio César",
+    "acto": "Cuarto Acto",
+    "escena": "Escena 1",
+    "personaje": "Octavio",
+    "cita": "Vamos, vamos, a lo nuestro. Si apenas discutir los acalora, la batalla transformará en sangre cada gota de sudor. Miren, levanto mi espada contra los conjurados. ¿Cuándo creen ustedes que volveré a envainarla? Nunca, mi"
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Cominio",
+    "cita": "¡Que estos mismos instrumentos que profanáis ya nunca más resuenen! ¡Cuando los tambores y las trompetas se vuelvan sicofantes en el campo de batalla, rebosen las cortes y las ciudades todas de adulación hipócrita! ¡Cuando el acero se vuelva tan blando como la seda del parásito, dejad que este se convierta en obertura para la guerra! ¡Basta ya, digo! Porque no me he lavado la nariz que me sangró, o vencido a algún miserable enclenque, lo cual sin que nadie tomara nota de ello, muchos otros aquí lo han hecho, me proclamáis con aclamaciones hiperbólicas, como si yo gustara de que lo poco que hago se nutriera de elogios sazonados con mentiras."
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Hamlet",
+    "acto": "Tercer Acto",
+    "escena": "Escena I",
+    "personaje": "Rey",
+    "cita": "Gracias, querido señor mío. Ay, mi delito es maloliente. hiede hasta el cielo, y sobre él cae la maldición primera y más antigua, la muerte de un hermano. Rezar me es imposible, aunque la inclinación fuera tan fuerte como el albedrío, es más fuerte mi culpa, y vence a mi intención, y como un hombre atado a un propósito doble, estoy paralizado, no sabiendo por dónde debo comenzar, y así a la una y a la otra desatiendo. ¿Qué importa que esta mano maldecida esté engrosada con la sangre de un hermano? ¿No hay lluvia suficiente en los amables cielos para dejarla blanca como nieve? ¿Para qué sirve la misericordia, sino para enfrentarse con el rostro del crimen?"
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Cominio",
+    "cita": "A lo que sospecho, Marcio, sus bandas de vanguardia son antiates de su entera confianza. Al frente de ellos, Aufidio, de quien esperan todo.<br><br><strong>MARCIO</strong><br>Os suplico, por todas las batallas en que hemos peleado, por toda la sangre que hemos derramado juntos, por los votos que hemos hecho de amistad eterna, que me lancéis en el acto en contra de Aufidio y de sus antiates; que no perdáis ni un momento, sino que, oscureciendo el aire con espadas blandidas y con flechas, probemos suerte ahora mismo."
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Timón de Atenas",
+    "acto": "Cuarto Acto",
+    "escena": "Escena I",
+    "personaje": "Timón",
+    "cita": "También yo te conozco, y fuera de conocerte nada más deseo saber. Sigue tus tambores, y pinta la tierra con la sangre de los hombres: ¡Gules! ¡Gules! Los cánones religiosos, las leyes civiles son crueles, ¿qué ha de ser la guerra, entonces? Esta, tu maligna puta, es más destructiva que tu espada, con todo y su angélico aspecto."
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Antonio y Cleopatra",
+    "acto": "Primer Acto",
+    "escena": "Escena Iv",
+    "personaje": "César",
+    "cita": "Oh, Antonio, te he perseguido hasta aquí; pero sangramos nuestros cuerpos para echar fuera nuestras enfermedades. Debí por fuerza mostrarte este día funesto o asistir al tuyo. No podíamos habitar juntos en la extensión del universo. Mas con todo, déjame lamentar con lágrimas tan potentes como la sangre de los corazones que tú, mi hermano, mi colega en las más altas empresas, mi socio imperial, amigo y compañero en el frente de batalla, brazo de mi propio cuerpo, y corazón en donde se alumbraban mis pensamientos, que nuestras estrellas, irreconciliables, hayan dividido hasta este punto nuestras semejanzas. Óiganme, buenos amigos… Pero os lo diré en mejor ocasión. El negocio de este hombre se le ¿Quién eres?"
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Otelo",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Yago",
+    "cita": "Sí, despréciame si digo lo contrario. Tres grandes de esta ciudad le rogaron, sombrero en mano y personalmente, que me designara teniente suyo, y a fe de buen soldado, conozco mi valía, y el puesto me compete. Pero él, enamorado de su orgullo, y tenaz en su intento, se los quitó de encima con ampulosos ambages, horriblemente henchidos de epítetos de guerra, y en conclusión rechaza a mis intercesores. Porque «de cierto», dice, «ya tengo mi oficial». ¿Y quién era él?"
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Tito",
+    "cita": "¡Salud, Roma, victoriosa en tus mortajas de duelo! He aquí que, como la barca que libró su carga y regresa con una preciosa provisión a la bahía de donde primero levó anclas, viene Andrónico, coronado con ramas de laurel, a saludar de nuevo a su país con llanto, llanto de verdadero goce por su regreso a Roma. Oh tú, gran defensor de este Capitolio, preside con gracia los ritos que llevaremos a cabo. Romanos, contemplen de veinticinco valientes hijos, la mitad en número de los que tuvo el rey Príamo, los pobres restos vivos y muertos. Que Roma recompense con amor a los que sobreviven; y a aquellos que he traído a su último hogar, con un entierro Los godos me han permitido enfundar mi espada."
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Tito Andrónico",
+    "acto": "Primer Acto",
+    "escena": "Escena Iii",
+    "personaje": "Lucio",
+    "cita": "Bien, gentil auditorio, deben saber que Quirón y el maldito Demetrio fueron los que asesinaron al hermano del emperador, y los que violaron a nuestra hermana. Por sus crueles crímenes nuestros hermanos fueron decapitados, despreciadas las lágrimas de nuestro padre, y le fue vilmente arrancada esa mano leal que peleó hasta el fin por Roma, y envió sus enemigos a la tumba. En fin, yo mismo fui injustamente desterrado, se cerraron las puertas, y en llanto me vi arrojado, a mendigar consuelo"
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Coriolano",
+    "acto": "Primer Acto",
+    "escena": "Escena I",
+    "personaje": "Marcio",
+    "cita": "Serán los que mejor voluntad tengan. Si hubiere alguno aquí (pecado será dudarlo) que guste este color de que me veis cubierto; si alguno estima en menos su persona que su buena reputación; si está convencido alguno de que una muerte valiente es compensación de una mala vida, y que su patria le es más amada que sí mismo, que ese o todos los que así piensen, hagan señales para expresar que están dispuestos. ¡Dejadme! ¿Me convertís en espada? Si estas demostraciones no son tan solo externas, ¿quién de ustedes no vale cuatro volscos? No hay ninguno que no pueda oponer al gran Aufidio un escudo tan firme como el suyo. Cierto número debo escoger de"
+  },
+  {
+    "eje": "Guerra (como construcción simbólica o conceptual)",
+    "obra": "Timón de Atenas",
+    "acto": "Cuarto Acto",
+    "escena": "Escena Iv",
+    "personaje": "Alcibíades",
+    "cita": "«Yace aquí un mísero cadáver, privado de su mísera alma. No busquéis mi nombre. ¡La peste os consuma, malvados infelices que quedáis! Aquí yazgo yo, Timón, que en vida odié a los hombres. Pasa y maldice a tus anchas. Pasa, sí, y no te pares.» Bien expresa esto tus sentimientos postreros. Aunque aborreciste nuestros humanos sufrimientos y despreciaste la marea de nuestros cerebros y esas otras goticas que de la mezquina naturaleza caen, tu rica imaginación te enseñó, sin embargo, a hacer que, por tus faltas perdonadas, llorara el vasto Neptuno sobre tu baja tumba para siempre. Ha muerto el noble Timón; su recuerdo crecerá con el tiempo."
+  }
+];
+
+// ─── EJE ICONS ───
+const EJE_ICONS = {
+  "Mujer / feminidad / ser mujer / caracterización simbólica": "&#9792;",
+  "Muerte (no literal)": "&#8224;",
+  "Vejez": "&#9702;",
+  "Maternidad": "&#9825;",
+  "Venganza": "&#9741;",
+  "Odio": "&#9889;",
+  "Noche (como construcción poética)": "&#9790;",
+  "Luz y oscuridad (como símbolos)": "&#9788;",
+  "Guerra (como construcción simbólica o conceptual)": "&#9876;"
+};
+
+// ─── HELPERS ───
+function shortEje(s) {
+  return s.replace(/\s*\(.*?\)\s*/g, '').replace(/\s*\/.*$/, '').trim();
+}
+
+// ─── POPULATE SELECTS ───
+function populate() {
+  const ejes = [...new Set(DATA.map(d => d.eje))].sort();
+  const obras = [...new Set(DATA.map(d => d.obra))].sort();
+  const personajes = [...new Set(DATA.map(d => d.personaje))].sort();
+
+  const addOptions = (sel, items, stripParens) => {
+    items.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v;
+      o.textContent = stripParens ? shortEje(v) : v;
+      sel.appendChild(o);
+    });
+  };
+
+  addOptions(document.getElementById('sel-eje'), ejes, true);
+  addOptions(document.getElementById('sel-obra'), obras);
+  addOptions(document.getElementById('sel-personaje'), personajes);
+
+  document.getElementById('count-total').textContent = DATA.length;
+}
+
+// ─── FILTER & RENDER ───
+function getFilters() {
+  return {
+    eje: document.getElementById('sel-eje').value,
+    obra: document.getElementById('sel-obra').value,
+    personaje: document.getElementById('sel-personaje').value
+  };
+}
+
+function filtered(f) {
+  return DATA.filter(d =>
+    (!f.eje || d.eje === f.eje) &&
+    (!f.obra || d.obra === f.obra) &&
+    (!f.personaje || d.personaje === f.personaje)
+  );
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderCard(item, showEjeTag) {
+  const ejeShort = shortEje(item.eje);
+  const tag = showEjeTag
+    ? `<span class="eje-tag">${escapeHtml(ejeShort)}</span>`
+    : '';
+  return `<div class="card">
+    <div class="card-meta">
+      <span class="card-character">${escapeHtml(item.personaje)}</span>
+      <span class="card-play">${escapeHtml(item.obra)}</span>
+      <span class="card-location">${escapeHtml(item.acto)} &nbsp;&middot;&nbsp; ${escapeHtml(item.escena)}</span>
+    </div>
+    <div class="card-body">
+      ${tag}
+     <blockquote>${item.cita}</blockquote>
+    </div>
+  </div>`;
+}
+
+function render() {
+  const f = getFilters();
+  const items = filtered(f);
+  const container = document.getElementById('results');
+  document.getElementById('count-shown').textContent = items.length;
+
+  // Active filters hint
+  const parts = [];
+  if (f.eje) parts.push(`Eje: ${shortEje(f.eje)}`);
+  if (f.obra) parts.push(`Obra: ${f.obra}`);
+  if (f.personaje) parts.push(`Personaje: ${f.personaje}`);
+  document.getElementById('active-filters').textContent = parts.join(' · ');
+
+  if (items.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">&#8220;&#8221;</div>
+      <p>No se encontraron parlamentos con los filtros seleccionados.</p>
+    </div>`;
+    return;
+  }
+
+  // If filtering by eje (or no grouping needed), group by eje
+  const groupByEje = !f.eje;
+  let html = '';
+
+  if (groupByEje) {
+    // Group by eje preserving canonical order
+    const ejeOrder = [...new Set(DATA.map(d => d.eje))].sort();
+    const groups = {};
+    ejeOrder.forEach(e => { groups[e] = []; });
+    items.forEach(item => { groups[item.eje].push(item); });
+
+    for (const eje of ejeOrder) {
+      const cards = groups[eje];
+      if (!cards.length) continue;
+      const icon = EJE_ICONS[eje] || '&bull;';
+      const ejeShort = shortEje(eje);
+      html += `<div class="eje-group">
+        <div class="eje-heading">
+          <div class="eje-icon">${icon}</div>
+          <h2>${escapeHtml(ejeShort)}</h2>
+          <span class="eje-count">${cards.length} parlamento${cards.length!==1?'s':''}</span>
+        </div>
+        <div class="cards-grid">
+          ${cards.map(c => renderCard(c, false)).join('')}
+        </div>
+      </div>`;
+    }
+  } else {
+    // Flat cards with eje tag
+    html = `<div class="cards-grid">${items.map(c => renderCard(c, true)).join('')}</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// ─── EVENTS ───
+['sel-eje','sel-obra','sel-personaje'].forEach(id => {
+  document.getElementById(id).addEventListener('change', render);
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  document.getElementById('sel-eje').value = '';
+  document.getElementById('sel-obra').value = '';
+  document.getElementById('sel-personaje').value = '';
+  render();
+});
+
+// ─── INIT ───
+populate();
+render();
+</script>
+</body>
+</html>
